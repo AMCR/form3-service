@@ -1,0 +1,18 @@
+version: '2'
+services:
+  service:
+    environment:
+      - ENVIRONMENT=ct
+    image: "${APP_NAME}:${APP_VERSION}"
+#    depends_on:
+#      - mock
+    ports:
+      - "8080"
+    expose:
+      - "8080"
+#  mock:
+#    image: "rodolpheche/wiremock:2.14.0-alpine"
+#    ports:
+#      - "8080"
+#    expose:
+#      - "8080"

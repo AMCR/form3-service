@@ -8,6 +8,41 @@ basePath: /
 schemes:
   - https
 paths:
+  /v1/payments/{paymentId}:
+    get:
+      summary: Get a payment by Id
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: paymentId
+          required: true
+          type: string
+          description: "Payment Id"
+      responses:
+        '200':
+          description: success
+          schema:
+            $ref: '#/definitions/payments-list-response'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+    delete:
+      summary: Get a payment by Id
+      parameters:
+        - in: path
+          name: paymentId
+          required: true
+          type: string
+          description: "Payment Id"
+      responses:
+        '200':
+          description: success
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
   /v1/payments:
     get:
       summary: Get a list of payments
@@ -18,10 +53,7 @@ paths:
       parameters:
         - in: body
           name: body
-          description: >-
-            This is the request object that passes the Article we want
-            recommendations based on and some query parameters and filters
-          required: true
+          required: false
           schema:
             $ref: '#/definitions/payments-list-request'
       responses:
@@ -33,6 +65,7 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/error'
+
 definitions:
   error:
     type: object
@@ -197,9 +230,17 @@ definitions:
   payments-list-request:
     type: object
     properties:
-      type:
-        type: string
-
+      size:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+        example: 10
+      offset:
+        type: integer
+        minimum: 0
+        default: 0
+        example: 0
   payments-list-response:
     type: object
     properties:
@@ -208,9 +249,11 @@ definitions:
         items:
           $ref: '#/definitions/payment'
       links:
-        type: array
-        items:
-          type: string
-          format: url
+        type: object
+        properties:
+          self:
+            type: string
+            example: "https://api.test.form3.tech/v1/payments"
+            format: url
 
 
