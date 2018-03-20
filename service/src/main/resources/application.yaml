@@ -1,0 +1,27 @@
+
+management:
+  endpoints.enabled-by-default: false
+  endpoint:
+    health:
+      enabled: true
+      show-details: always
+      cache:
+        time-to-live: 60s
+    info:
+      enabled: true
+      cache:
+        time-to-live: 60s
+  endpoints:
+    web:
+      base-path: /
+
+info:
+  build:
+    artifact: "@project.artifactId@"
+    description: "@project.description@"
+    version: "@project.version@"
+
+logging:
+  level:
+    root: INFO
+  file: app.log
