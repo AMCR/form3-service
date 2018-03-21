@@ -236,7 +236,7 @@ definitions:
         maximum: 100
         default: 10
         example: 10
-      offset:
+      page:
         type: integer
         minimum: 0
         default: 0
@@ -255,5 +255,3 @@ definitions:
             type: string
             example: "https://api.test.form3.tech/v1/payments"
             format: url
-
-
