@@ -1,10 +1,19 @@
 package form3.service.endpoints.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PaymentDataAttributes {
+    @JsonProperty("amount")
     private String   amount;
+    @JsonProperty("currency")
     private String currency;
+
+    public PaymentDataAttributes() {
+    }
 
     public PaymentDataAttributes(String amount, String currency) {
         this.amount = amount;

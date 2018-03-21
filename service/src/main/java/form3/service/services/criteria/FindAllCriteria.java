@@ -30,7 +30,6 @@ public class FindAllCriteria {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(size, page);
     }
 }

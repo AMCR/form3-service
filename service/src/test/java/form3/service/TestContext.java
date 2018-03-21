@@ -16,7 +16,7 @@ public interface TestContext {
     String  samplePaymentId2 = "22222222-2222-2222-2222-222222222222";
 
     Payment samplePayment1 = new Payment(
-        Optional.of(samplePaymentId1),
+        samplePaymentId1,
         PaymentType.Payment,
         0,
         "11111111-1111-1111-1111-111111111111",
@@ -26,7 +26,7 @@ public interface TestContext {
         )
     );
     Payment samplePayment2 = new Payment(
-        Optional.of(samplePaymentId2),
+        samplePaymentId2,
         PaymentType.Payment,
         0,
         "11111111-1111-1111-1111-111111111111",

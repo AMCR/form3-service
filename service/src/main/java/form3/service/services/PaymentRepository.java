@@ -3,11 +3,11 @@ package form3.service.services;
 import form3.service.domain.Payment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
+import org.springframework.data.repository.Repository;
 
 import java.util.Optional;
 
-public interface PaymentRepository extends ElasticsearchRepository<Payment, String> {
+public interface PaymentRepository extends Repository<Payment, String> {
 
     Page<Payment> findAll(Pageable pageable);
 
@@ -16,4 +16,5 @@ public interface PaymentRepository extends ElasticsearchRepository<Payment, Stri
     Payment save(Payment payment);
 
     void deleteById(String s);
+
 }

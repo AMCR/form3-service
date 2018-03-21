@@ -1,0 +1,10 @@
+{
+    "id": "11111111-1111-1111-1111-111111111111",
+    "type": "Payment",
+    "version": 0,
+    "organisation_id": "11111111-1111-1111-1111-111111111111",
+    "attributes": {
+        "amount": "1.00",
+        "currency": "USD"
+    }
+}

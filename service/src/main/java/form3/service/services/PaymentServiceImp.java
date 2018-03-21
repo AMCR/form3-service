@@ -63,6 +63,7 @@ public class PaymentServiceImp implements PaymentService {
 
     @Override
     public Payment createOrUpdate(@NotNull Payment payment) {
-        return repository.save(payment);
+        repository.save(payment);
+        return payment;
     }
 }

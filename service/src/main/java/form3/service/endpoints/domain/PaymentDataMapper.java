@@ -1,13 +1,18 @@
 package form3.service.endpoints.domain;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import form3.service.domain.Payment;
 import form3.service.domain.PaymentAttributes;
 import form3.service.domain.PaymentType;
+import form3.service.services.IdGeneratorService;
 
+import java.io.IOException;
 import java.util.Currency;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
+@SuppressWarnings("ALL")
 public class PaymentDataMapper {
+    private static ObjectMapper mapper = new ObjectMapper();
     private PaymentDataMapper(){
     }
 
@@ -15,15 +20,22 @@ public class PaymentDataMapper {
      * Convert PaymentData -> Payment Domain
      */
     public static PaymentData withVersionMapToPaymentData(String version, Payment payment) {
-        if( version.equals("v1") ){
+        if( "v1".equals(version) ){
             return mapToPaymentDataV1(payment);
+        }
+        throw new IllegalArgumentException(String.format("Invalid version '%s'", version));
+    }
+
+    public static PaymentData withVersionMapToPaymentData(String version, String payload) throws IOException {
+        if( "v1".equals(version) ){
+            return mapper.readValue(payload, PaymentDataV1.class);
         }
         throw new IllegalArgumentException(String.format("Invalid version '%s'", version));
     }
 
     private static PaymentDataV1 mapToPaymentDataV1(Payment payment){
         return new PaymentDataV1(
-                payment.getId(),
+                Optional.of(payment.getId()),
                 payment.getType().getName(),
                 payment.getVersion(),
                 payment.getOrganizationId(),
@@ -42,15 +54,15 @@ public class PaymentDataMapper {
      * Convert PaymentData <- Payment Domain
      */
     public static Payment withVersionMapToPayment(String version, PaymentData payment) {
-        if( version.equals("v1") && payment instanceof PaymentDataV1 ){
+        if( "v1".equals(version) && payment instanceof PaymentDataV1 ){
             return mapToPayment((PaymentDataV1) payment);
         }
         throw new IllegalArgumentException(String.format("Invalid version '%s'", version));
     }
 
-    private static Payment mapToPayment( PaymentDataV1 data ){
+    private static Payment mapToPayment( PaymentDataV1 data){
         return new Payment(
-                data.getId(),
+                data.getId().get(), //At this point we must have a paymentId
                 PaymentType.valueOf(data.getType()),
                 data.getVersion(),
                 data.getOrganizationId(),

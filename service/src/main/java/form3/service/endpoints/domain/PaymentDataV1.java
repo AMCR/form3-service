@@ -1,15 +1,33 @@
 package form3.service.endpoints.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 import java.util.Optional;
 
+@SuppressWarnings("ALL")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PaymentDataV1 implements PaymentData{
 
+    @JsonProperty("id")
     private Optional<String> id;
+    @JsonProperty(value = "type", required = true)
     private String type;
+    @JsonProperty(value = "version", required = true)
     private int version;
+    @JsonProperty(value = "organisation_id", required = true)
     private String organizationId;
+    @JsonProperty(value = "attributes", required = true)
     private PaymentDataAttributes attributes;
+
+    public PaymentDataV1() {
+        this.id = Optional.empty();
+    }
+
+    public void setId(String id){
+        this.id = Optional.ofNullable(id);
+    }
 
     public PaymentDataV1(Optional<String> id, String type, int version, String organizationId, PaymentDataAttributes attributes) {
         this.id = id;

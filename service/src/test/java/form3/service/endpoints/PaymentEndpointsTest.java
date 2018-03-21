@@ -8,8 +8,13 @@ import form3.service.services.PaymentService;
 import org.junit.Test;
 import org.springframework.http.ResponseEntity;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Optional;
 
+import static java.nio.file.Files.readAllBytes;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.mock;
@@ -50,8 +55,7 @@ public class PaymentEndpointsTest implements TestContext {
         when(mockPaymentService.findAll(org.mockito.Matchers.eq(sampleCriteria)))
             .thenReturn(samplePaymentList);
 
-        RequestFetchPayment fetchPayment = new RequestFetchPayment(1, 10);
-        ResponseEntity<ResponsePaymentList> result = endpoints.findAll(version, fetchPayment);
+        ResponseEntity<ResponsePaymentList> result = endpoints.findAll(version, sampleCriteria.getSize(), sampleCriteria.getPage());
 
         assertThat(result.getStatusCodeValue(), equalTo(200));
         assertThat(result.getBody(),            equalTo(sampleResponsePaymentList));
@@ -65,7 +69,7 @@ public class PaymentEndpointsTest implements TestContext {
         when(mockPaymentService.createOrUpdate(org.mockito.Matchers.eq(samplePayment1)))
             .thenReturn(samplePayment1);
 
-        ResponseEntity<ResponsePaymentList> result = endpoints.createOrUpdate(version, samplePaymentDataNew);
+        ResponseEntity<ResponsePaymentList> result = endpoints.createOrUpdate(version, fromPayload("/payment-data-new.json"));
 
         assertThat(result.getStatusCodeValue(), equalTo(201));
         assertThat(result.getBody(),            equalTo(sampleResponsePayment1));
@@ -76,7 +80,7 @@ public class PaymentEndpointsTest implements TestContext {
         when(mockPaymentService.createOrUpdate(org.mockito.Matchers.eq(samplePayment1)))
             .thenReturn(samplePayment1);
 
-        ResponseEntity<ResponsePaymentList> result = endpoints.createOrUpdate(version, samplePaymentDataUpdated);
+        ResponseEntity<ResponsePaymentList> result = endpoints.createOrUpdate(version, fromPayload("/payment-data.json"));
 
         assertThat(result.getStatusCodeValue(), equalTo(200));
         assertThat(result.getBody(),            equalTo(sampleResponsePayment1));
@@ -104,5 +108,13 @@ public class PaymentEndpointsTest implements TestContext {
 
         assertThat(result.getStatusCodeValue(), equalTo(404));
         assertThat(result.hasBody(),            equalTo(false));
+    }
+
+    public String fromPayload(String fileName){
+        try {
+            return new String(readAllBytes(Paths.get(getClass().getResource(fileName).toURI())));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
